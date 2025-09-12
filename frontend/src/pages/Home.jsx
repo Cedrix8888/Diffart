@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { Sky_Component } from '../components/FeatureComponent/Sky_Component';
 
 export default function Home() {
     return (
         <div>
+            <Sky_Component />
             <div className="text-center py-36">
                 <p className="font-semibold tracking-tight text-gray-900 text-7xl">Make AI image</p>
                 <p className="font-semibold tracking-tight text-gray-900 text-7xl">more</p>
