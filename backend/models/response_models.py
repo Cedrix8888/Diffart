@@ -21,6 +21,50 @@ class LayerResponse(BaseResponse):
 class SvgResponse(BaseResponse):
     text: str = Field(..., description="生成的SVG文本内容")
 
+from pydantic import BaseModel
+from datetime import datetime
+from typing import List, Dict, Any, Optional
+
+class ChatMessageResponse(BaseModel):
+    role: str
+    content: str
+    timestamp: str
+    message_id: str
+    metadata: Optional[Dict[str, Any]] = None
+
+class ChatResponse(BaseModel):
+    conversation_id: str
+    message_id: str
+    content: str
+    model: str
+    provider: str
+    usage: Optional[Dict[str, Any]] = None
+    timestamp: str
+
+class ConversationResponse(BaseModel):
+    conversation_id: str
+    user_id: str
+    title: str
+    messages: List[ChatMessageResponse]
+    created_at: str
+    updated_at: str
+    metadata: Optional[Dict[str, Any]] = None
+
+class ConversationListResponse(BaseModel):
+    conversations: List[ConversationResponse]
+    total: int
+    offset: int
+    limit: int
+
+class ConversationCreatedResponse(BaseModel):
+    conversation_id: str
+    title: str
+    created_at: str
+
+class ModelListResponse(BaseModel):
+    provider: str
+    models: List[str]
+
 class ErrorResponse(BaseModel):
     user_id: str = Field("zx", description="用户ID")
     success: bool = Field(False, description="请求失败")

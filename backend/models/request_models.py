@@ -1,4 +1,43 @@
 from pydantic import BaseModel, Field
+from typing import List, Dict, Any, Optional
+from enum import Enum
+
+class LLMProvider(str, Enum):
+    OPENAI = "openai"
+    ANTHROPIC = "anthropic"
+    LOCAL = "local"
+
+class ChatMessage(BaseModel):
+    role: str = Field(..., description="Message role: system, user, or assistant")
+    content: str = Field(..., description="Message content")
+
+class ChatRequest(BaseModel):
+    user_id: str = Field("zx", description="User ID for the chat session")
+    conversation_id: Optional[str] = Field(None, description="Conversation ID for context")
+    message: str = Field(..., min_length=1, description="User message")
+    provider: LLMProvider = Field(LLMProvider.OPENAI, description="LLM provider to use")
+    model: Optional[str] = Field(None, description="Specific model to use")
+    temperature: float = Field(0.7, ge=0.0, le=1.0, description="Response randomness")
+    max_tokens: int = Field(1000, gt=0, le=4000, description="Maximum tokens in response")
+    stream: bool = Field(False, description="Whether to stream the response")
+    system_message: Optional[str] = Field(None, description="System message for new conversations")
+
+class ConversationRequest(BaseModel):
+    user_id: str = Field("zx", description="User ID")
+    title: Optional[str] = Field(None, description="Conversation title")
+    system_message: Optional[str] = Field(None, description="Initial system message")
+
+class ConversationUpdateRequest(BaseModel):
+    user_id: str = Field("zx", description="User ID")
+    title: str = Field(..., min_length=1, description="New conversation title")
+
+class ConversationListRequest(BaseModel):
+    user_id: str = Field("zx", description="User ID")
+    limit: int = Field(50, gt=0, le=100, description="Number of conversations to return")
+    offset: int = Field(0, ge=0, description="Offset for pagination")
+
+class ModelListRequest(BaseModel):
+    provider: LLMProvider = Field(..., description="LLM provider to get models for")
 
 class RgbRequest(BaseModel):
     user_id: str = Field("zx", description="User ID for image generation")
