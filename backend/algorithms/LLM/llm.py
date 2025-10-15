@@ -1,65 +1,19 @@
-"""
-Large Language Model Service
-Supports multiple LLM providers including OpenAI, Anthropic, and local models
-"""
-
 import asyncio
 import json
-from typing import List, Dict, Any, Optional, AsyncGenerator
 from datetime import datetime
 import aiohttp
 import os
 from enum import Enum
 
-class LLMProvider(str, Enum):
-    OPENAI = "openai"
-    ANTHROPIC = "anthropic"
-    LOCAL = "local"
+def llm(
+    messages: list[dict[str, str]],
+    temperature: float = 0.7,
+    max_tokens: int = 1000,
+    stream: bool = False
+) -> dict[str, any]:
+    
 
-class LLMService:
-    def __init__(self):
-        self.openai_api_key = os.getenv("OPENAI_API_KEY")
-        self.anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
-        self.local_api_url = os.getenv("LOCAL_LLM_URL", "http://localhost:11434")
-        
-    async def send_message(
-        self,
-        messages: List[Dict[str, str]],
-        provider: LLMProvider = LLMProvider.OPENAI,
-        model: Optional[str] = None,
-        temperature: float = 0.7,
-        max_tokens: int = 1000,
-        stream: bool = False
-    ) -> Dict[str, Any]:
-        """
-        Send message to LLM and get response
-        
-        Args:
-            messages: List of message objects with 'role' and 'content'
-            provider: LLM provider to use
-            model: Model name (provider-specific)
-            temperature: Randomness of response (0.0-1.0)
-            max_tokens: Maximum tokens in response
-            stream: Whether to stream response
-            
-        Returns:
-            Response dictionary with content and metadata
-        """
-        
-        if provider == LLMProvider.OPENAI:
-            return await self._send_openai_message(
-                messages, model or "gpt-3.5-turbo", temperature, max_tokens, stream
-            )
-        elif provider == LLMProvider.ANTHROPIC:
-            return await self._send_anthropic_message(
-                messages, model or "claude-3-sonnet-20240229", temperature, max_tokens, stream
-            )
-        elif provider == LLMProvider.LOCAL:
-            return await self._send_local_message(
-                messages, model or "llama2", temperature, max_tokens, stream
-            )
-        else:
-            raise ValueError(f"Unsupported provider: {provider}")
+
     
     async def _send_openai_message(
         self,

@@ -9,8 +9,8 @@ from models.response_models import (
     ConversationCreatedResponse, ModelListResponse, ErrorResponse,
     ChatMessageResponse
 )
-from algorithms.LLM.llm_service import llm_service
-from algorithms.LLM.llm_service import LLMProvider as ServiceLLMProvider
+from backend.algorithms.LLM.llm import llm_service
+from backend.algorithms.LLM.llm import LLMProvider as ServiceLLMProvider
 from algorithms.LLM.dialogue_manager import dialogue_manager
 from utils.security import get_api_key
 from dotenv import load_dotenv
