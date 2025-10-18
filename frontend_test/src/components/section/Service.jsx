@@ -1,3 +1,6 @@
+import './Section.css';
+import './Service.css';
+
 export default function Service() {
     return (
         // Services Section

@@ -7,6 +7,8 @@ import Contact from '../components/section/Contact';
 import Footer from '../components/FeatureComponent/Footer';
 
 export default function HomePage() {
+
+    
     return (
         <div>
             <NavBar />

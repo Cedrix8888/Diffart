@@ -1,3 +1,6 @@
+import './Section.css';
+import './About.css';
+
 export default function About() {
     return (
         // About Section

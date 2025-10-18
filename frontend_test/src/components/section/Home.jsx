@@ -1,3 +1,6 @@
+import './Section.css';
+import './Home.css';
+
 export default function Home() {
     // Home Section
     <section id="home" class="section">

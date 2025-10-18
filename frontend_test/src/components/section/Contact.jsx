@@ -1,4 +1,7 @@
-export function Portfolio() {
+import './Section.css';
+import './Contact.css';
+
+export function Contact() {
     return (
         // Contact Section
         <section id="contact" class="section">
