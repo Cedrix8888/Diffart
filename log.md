@@ -18,3 +18,6 @@
 
 
 for llm, we use https://huggingface.co/openai-community/gpt2
+
+
+歌剧海报，包含摩登女郎，歌剧舞台等

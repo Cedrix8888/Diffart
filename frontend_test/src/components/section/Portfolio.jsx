@@ -4,10 +4,10 @@ import './Portfolio.css';
 export default function Portfolio() {
     return (
         // Portfolio Section
-        <section id="portfolio" class="section">
+        <section id="portfolio" className="section">
             <div>
                 <h1>PORTFOLIO</h1>
-                <p class="section-info">Project showcase, case studies, client work, and achievements gallery</p>
+                <p className="section-info">Project showcase, case studies, client work, and achievements gallery</p>
             </div>
         </section>
     )

@@ -123,6 +123,7 @@
 }
 
 
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .navbar {
@@ -181,9 +182,11 @@
     .menu-toggle {
         display: block;
     }
+
 }
 
 @media (max-width: 480px) {
+
     .navbar {
         padding: 8px 15px;
     }

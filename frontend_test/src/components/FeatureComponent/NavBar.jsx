@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function NavBar() {
     
-    const sections = document.querySelectorAll('.section');
     const [activeSection, setActiveSection] = useState('home');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navLinksRef = useRef(null);
@@ -11,18 +10,80 @@ export default function NavBar() {
 
     // Function to update active nav link based on scroll position
     const updateActiveNav = () => {
-        let current = '';
+        console.log('=== updateActiveNav called ===');
         
-        sections.forEach(section => {
+        const sections = document.querySelectorAll('.section');
+        console.log(`Found ${sections.length} sections`);
+        
+        if (sections.length === 0) {
+            console.warn('No sections found with class "section"');
+            return;
+        }
+        
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const navbarHeight = 80; // Approximate navbar height
+        
+        console.log(`ScrollY: ${scrollY}, Window Height: ${windowHeight}, Current Active: ${activeSection}`);
+        
+        let current = '';
+        let minDistance = Infinity;
+        
+        sections.forEach((section, index) => {
             const sectionTop = section.offsetTop;
-            if (window.scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
+            const sectionHeight = section.offsetHeight;
+            const sectionBottom = sectionTop + sectionHeight;
+            const sectionId = section.getAttribute('id');
+            
+            // Calculate distance from current scroll position to section start
+            const distanceToTop = Math.abs(scrollY + navbarHeight - sectionTop);
+            
+            console.log(`Section ${index + 1} (${sectionId}):`, {
+                top: sectionTop,
+                height: sectionHeight,
+                bottom: sectionBottom,
+                distanceToTop: distanceToTop,
+                isInView: scrollY + navbarHeight >= sectionTop && scrollY + navbarHeight < sectionBottom
+            });
+            
+            // Method 1: Check if scroll position + navbar offset is within section
+            if (scrollY + navbarHeight >= sectionTop && scrollY + navbarHeight < sectionBottom) {
+                current = sectionId;
+                console.log(`✓ Active by position: ${sectionId}`);
+            }
+            
+            // Method 2: Find closest section (fallback)
+            if (distanceToTop < minDistance) {
+                minDistance = distanceToTop;
+                if (!current) {
+                    current = sectionId;
+                    console.log(`✓ Active by proximity: ${sectionId} (distance: ${distanceToTop})`);
+                }
             }
         });
-
-        if (current && current !== activeSection) {
-            setActiveSection(current);
+        
+        // Fallback to home if no section detected and we're near the top
+        if (!current && scrollY < 100) {
+            current = 'home';
+            console.log('✓ Fallback to home (near top)');
         }
+        
+        // Final fallback
+        if (!current) {
+            current = 'home';
+            console.log('✓ Final fallback to home');
+        }
+        
+        console.log(`Final decision: ${current} (was: ${activeSection})`);
+        
+        if (current !== activeSection) {
+            console.log(`🔄 CHANGING: ${activeSection} → ${current}`);
+            setActiveSection(current);
+        } else {
+            console.log(`✓ No change needed: ${current}`);
+        }
+        
+        console.log('=== updateActiveNav end ===\n');
     };
 
     // Handle mobile menu toggle
@@ -46,6 +107,8 @@ export default function NavBar() {
 
     // Set up event listeners
     useEffect(() => {
+        console.log('🔧 Setting up scroll listener, activeSection:', activeSection);
+        
         window.addEventListener('scroll', updateActiveNav);
         document.addEventListener('click', handleClickOutside);
 
@@ -53,10 +116,11 @@ export default function NavBar() {
         updateActiveNav();
 
         return () => {
+            console.log('🧹 Cleaning up scroll listener');
             window.removeEventListener('scroll', updateActiveNav);
             document.removeEventListener('click', handleClickOutside);
         };
-    }, [activeSection]);
+    }, [activeSection]); // Add activeSection as dependency
 
     return (
         // Floating Navbar

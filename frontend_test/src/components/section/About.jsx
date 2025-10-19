@@ -4,10 +4,10 @@ import './About.css';
 export default function About() {
     return (
         // About Section
-        <section id="about" class="section">
+        <section id="about" className="section">
             <div>
                 <h1>ABOUT</h1>
-                <p class="section-info">Company story, mission, vision, team information, and core values</p>
+                <p className="section-info">Company story, mission, vision, team information, and core values</p>
             </div>
         </section>
     )
