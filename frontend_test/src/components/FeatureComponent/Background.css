@@ -1,30 +1,3 @@
-@keyframes gridMove {
-  0% {
-    background-position: 0 0, 0 0, 0 0, 0 0;
-  }
-  100% {
-    background-position: 40px 40px, -40px -40px, 20px 20px, -20px -20px;
-  }
-}
-
-@keyframes gridPulse {
-  0%, 100% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes gridGlow {
-  0%, 100% {
-    filter: brightness(1) saturate(1);
-  }
-  50% {
-    filter: brightness(1.2) saturate(1.3);
-  }
-}
-
 .dark-circuit-background {
   position: absolute;
   top: 0;
@@ -37,8 +10,8 @@
       0deg,
       transparent,
       transparent 19px,
-      rgba(34, 197, 94, 0.2) 19px,
-      rgba(34, 197, 94, 0.2) 20px,
+      rgba(34, 197, 94, 0.15) 19px,
+      rgba(34, 197, 94, 0.15) 20px,
       transparent 20px,
       transparent 39px,
       rgba(34, 197, 94, 0.15) 39px,
@@ -48,8 +21,8 @@
       90deg,
       transparent,
       transparent 19px,
-      rgba(34, 197, 94, 0.2) 19px,
-      rgba(34, 197, 94, 0.2) 20px,
+      rgba(34, 197, 94, 0.15) 19px,
+      rgba(34, 197, 94, 0.15) 20px,
       transparent 20px,
       transparent 39px,
       rgba(34, 197, 94, 0.15) 39px,
@@ -57,12 +30,12 @@
     ),
     radial-gradient(
       circle at 20px 20px,
-      rgba(16, 185, 129, 0.25) 2px,
+      rgba(16, 185, 129, 0.18) 2px,
       transparent 2px
     ),
     radial-gradient(
       circle at 40px 40px,
-      rgba(16, 185, 129, 0.25) 2px,
+      rgba(16, 185, 129, 0.18) 2px,
       transparent 2px
     );
   background-size:
@@ -70,144 +43,4 @@
     40px 40px,
     40px 40px,
     40px 40px;
-  animation: 
-    gridMove 20s linear infinite,
-    gridPulse 4s ease-in-out infinite,
-    gridGlow 6s ease-in-out infinite;
-}
-
-.dark-circuit-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(
-      circle at 25% 25%,
-      rgba(34, 197, 94, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 75% 75%,
-      rgba(16, 185, 129, 0.08) 0%,
-      transparent 50%
-    );
-  animation: gridMove 15s linear infinite reverse;
-}
-
-.dark-circuit-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 80px,
-    rgba(34, 197, 94, 0.05) 80px,
-    rgba(34, 197, 94, 0.05) 81px
-  );
-  animation: gridMove 25s linear infinite;
-}
-
-/* Mouse glow effect */
-.mouse-glow {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(34, 197, 94, 0.15) 0%,
-    rgba(34, 197, 94, 0.08) 30%,
-    transparent 70%
-  );
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 1;
-  transition: all 0.3s ease;
-}
-
-/* Floating particles */
-.floating-particle {
-  position: absolute;
-  background: rgba(34, 197, 94, 0.6);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
-  animation: particleFloat 3s ease-in-out infinite;
-}
-
-@keyframes particleFloat {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-10px) scale(1.1);
-  }
-}
-
-/* Pulse rings */
-.pulse-ring {
-  position: absolute;
-  border: 2px solid rgba(34, 197, 94, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.pulse-ring-1 {
-  top: 20%;
-  left: 15%;
-  width: 100px;
-  height: 100px;
-  animation: pulseRing 4s ease-in-out infinite;
-}
-
-.pulse-ring-2 {
-  top: 60%;
-  right: 20%;
-  width: 150px;
-  height: 150px;
-  animation: pulseRing 6s ease-in-out infinite 2s;
-}
-
-.pulse-ring-3 {
-  bottom: 20%;
-  left: 50%;
-  width: 80px;
-  height: 80px;
-  transform: translateX(-50%);
-  animation: pulseRing 5s ease-in-out infinite 1s;
-}
-
-@keyframes pulseRing {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.1;
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .mouse-glow {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .pulse-ring-1, .pulse-ring-2, .pulse-ring-3 {
-    display: none; /* Hide pulse rings on mobile for performance */
-  }
-  
-  .floating-particle {
-    display: none; /* Hide particles on mobile for performance */
-  }
 }
