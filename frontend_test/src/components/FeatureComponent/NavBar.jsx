@@ -126,7 +126,9 @@ export default function NavBar() {
         // Floating Navbar
         <nav className="navbar">
             <div className="nav-container">
-                <a href="#home" className="logo">LOGO</a>
+                <a href="#home" className="logo">
+                    <img src="/logo.svg" alt="logo" />
+                </a>
                 <div className="nav-center">
                     <ul 
                         className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`} 
