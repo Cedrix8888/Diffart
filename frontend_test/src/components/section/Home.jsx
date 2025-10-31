@@ -7,7 +7,7 @@ export default function Home() {
         // Home Section
         <div>
             <section id="home" className="section">
-                <div className='pl-10 pb-10'>
+                <div className='pl-10 pb-10 z-10'>
                     <img src="/diffart.svg" alt="diffart" />
                 </div>
                 <Background />
