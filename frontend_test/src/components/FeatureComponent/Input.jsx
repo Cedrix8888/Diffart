@@ -1,9 +1,8 @@
 import './Input.css';
 
-// Renamed to match file/component intent and avoid confusion with the page `Workspace` component
 export default function Input() {
     return (
-        <div>
+        <div className='flex flex-col justify-center items-center'>
             <div className="grid"></div>
             <div id="poda">
                 <div className="glow"></div>
@@ -14,9 +13,9 @@ export default function Input() {
                 <div className="white"></div>
 
                 <div className="border"></div>
-
+                
                 <div id="main">
-                    <input placeholder="Search..." type="text" name="text" className="input" />
+                    <textarea placeholder="Search..." name="text" className="input" />
                     <div id="input-mask"></div>
                     <div id="pink-mask"></div>
                     <div className="filterBorder"></div>

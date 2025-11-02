@@ -1,6 +1,7 @@
 /* Floating Navbar */
 .navbar {
     position: fixed;
+    z-index: 1000;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
@@ -9,7 +10,6 @@
     border-radius: 50px;
     padding: 12px 30px;
     border: 1px solid #333;
-    z-index: 1000;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 

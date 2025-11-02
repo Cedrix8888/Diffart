@@ -1,14 +1,15 @@
 .grid {
-    height: 800px;
-    width: 800px;
+    height: 30%;
+    width: 100%;
     background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px),
         linear-gradient(to bottom, #0f0f10 1px, transparent 1px);
     background-size: 1rem 1rem;
     background-position: center center;
     position: absolute;
-    z-index: -1;
+    z-index: 6;
     filter: blur(1px);
 }
+
 .white,
 .border,
 .darkBorderBg,
@@ -20,14 +21,12 @@
     position: absolute;
     overflow: hidden;
     z-index: -1;
-    /* Border Radius */
     border-radius: 12px;
     filter: blur(3px);
 }
 .input {
     background-color: #010201;
     border: none;
-    /* padding:7px; */
     width: 301px;
     height: 56px;
     border-radius: 10px;
@@ -39,9 +38,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Ensure the input and its UI layers sit above the card ::after overlay */
     position: relative;
-    z-index: 1;
+    z-index: 10;
 }
 .input::placeholder {
     color: #c0b9c0;
@@ -241,8 +239,8 @@
         100% {
             transform: translate(-50%, -50%) rotate(450deg);
         }
-    }
-    @keyframes leftright {
+}
+@keyframes leftright {
     0% {
         transform: translate(0px, 0px);
         opacity: 1;
@@ -252,6 +250,7 @@
         transform: translate(250px, 0px);
         opacity: 0;
     }
+
     80% {
         transform: translate(-40px, 0px);
         opacity: 0;

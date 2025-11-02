@@ -6,7 +6,7 @@ import Workspace from "./pages/Workspace.jsx"
 
 export default function App() {
   return (
-    <div className="font-sans bg-[#0a0a0a] text-white leading-[1.6] -z-10">
+    <div>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Homepage />} />

@@ -10,12 +10,7 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
     variant="fp16"
 )
 
-# Move to device
 pipe = pipe.to("cuda")
-
-# Enable memory optimizations
-# Enable xformers for faster attention (if installed)
-# pipe.enable_xformers_memory_efficient_attention()
 
 prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
 
@@ -26,6 +21,5 @@ result: Any = pipe(
     guidance_scale=7.5
 )
 
-# The pipeline returns a StableDiffusionXLPipelineOutput object with images attribute
 image = result.images[0]
 image.save("astronaut_jungle.png")
