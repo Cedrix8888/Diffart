@@ -1,8 +1,9 @@
-from PIL import Image
+import os
 import random
 import torch
 import safetensors.torch as sf
 from transformers import CLIPTextModel, CLIPTokenizer
+from PIL import Image
 from diffusers.models.autoencoders.autoencoder_kl import AutoencoderKL
 from diffusers.models.unets.unet_2d_condition import UNet2DConditionModel
 from diffusers.models.attention_processor import AttnProcessor2_0
@@ -30,13 +31,13 @@ def gen_trans(width: int = 1024,
     tokenizer_2 = CLIPTokenizer.from_pretrained(
         sdxl_name, subfolder="tokenizer_2")
     text_encoder = CLIPTextModel.from_pretrained(
-        sdxl_name, subfolder="text_encoder", torch_dtype=torch.float16, variant="fp16")
+        sdxl_name, subfolder="text_encoder", dtype=torch.float16, variant="fp16")
     text_encoder_2 = CLIPTextModel.from_pretrained(
-        sdxl_name, subfolder="text_encoder_2", torch_dtype=torch.float16, variant="fp16")
+        sdxl_name, subfolder="text_encoder_2", dtype=torch.float16, variant="fp16")
     vae = AutoencoderKL.from_pretrained(
-        sdxl_name, subfolder="vae", torch_dtype=torch.float16, variant="fp16")
+        sdxl_name, subfolder="vae", dtype=torch.float16, variant="fp16")
     unet = UNet2DConditionModel.from_pretrained(
-        sdxl_name, subfolder="unet", torch_dtype=torch.float16, variant="fp16")
+        sdxl_name, subfolder="unet", dtype=torch.float16, variant="fp16")
 
     # Download Model
     path_ld_diffusers_sdxl_attn = download_model(
@@ -116,5 +117,8 @@ def gen_trans(width: int = 1024,
         image_list = [Image.fromarray(result) for result in result_list]
         return image_list
 
-# if __name__ == "__main__":
-#     gen_trans()[0].save("./static/test.png")
+if __name__ == "__main__":
+    # 确保 static 目录存在
+    os.makedirs("./static", exist_ok=True)
+    # 保存文件
+    gen_trans()[0].save("./static/test.png")
