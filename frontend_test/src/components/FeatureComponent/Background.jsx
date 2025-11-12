@@ -5,7 +5,7 @@ export default function Background() {
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
     const timeRef = useRef(0);
-
+    
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;

@@ -8,7 +8,7 @@
     width: 512px;
 }
 
-button {
+#home button {
   cursor: pointer;
   text-decoration: none;
   display: flex;
@@ -26,11 +26,11 @@ button {
   transition: 1s;
 }
 
-button:active {
+#home button:active {
   transform: scale(0.95);
 }
 
-button:hover {
+#home button:hover {
   outline: 0.1em solid transparent;
   outline-offset: 0.2em;
   box-shadow: 0 0 1em 0 rgba(18,120, 50, 1);
@@ -40,20 +40,20 @@ button:hover {
   transition: 0.5s;
 }
 
-button span {
+#home button span {
   margin-right: 0.3em;
   transition: 0.5s;
 }
 
-button:hover span {
+#home button:hover span {
   text-shadow: 5px 5px 5px #00000040;
 }
 
-button:active span {
+#home button:active span {
   text-shadow: none;
 }
 
-button svg {
+#home button svg {
   height: 0.8em;
   fill: #ffffff;
   margin-right: -0.16em;
@@ -61,37 +61,37 @@ button svg {
   transition: 0.5s;
 }
 
-button:hover svg {
+#home button:hover svg {
   margin-right: 0.66em;
   transition: 0.5s;
   filter: drop-shadow(5px 5px 2.5px #00000040);
 }
 
-button:active svg {
+#home button:active svg {
   filter: none;
 }
 
-button svg polygon:nth-child(1) {
+#home button svg polygon:nth-child(1) {
   transition: 0.4s;
   transform: translateX(-60%);
 }
 
-button svg polygon:nth-child(2) {
+#home button svg polygon:nth-child(2) {
   transition: 0.5s;
   transform: translateX(-30%);
 }
 
-button:hover svg polygon:nth-child(1) {
+#home button:hover svg polygon:nth-child(1) {
   transform: translateX(0%);
   animation: opacity 1s infinite 0.6s;
 }
 
-button:hover svg polygon:nth-child(2) {
+#home button:hover svg polygon:nth-child(2) {
   transform: translateX(0%);
   animation: opacity 1s infinite 0.4s;
 }
 
-button:hover svg polygon:nth-child(3) {
+#home button:hover svg polygon:nth-child(3) {
   animation: opacity 1s infinite 0.2s;
 }
 
