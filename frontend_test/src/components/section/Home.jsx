@@ -1,13 +1,13 @@
 import './Section.css';
 import './Home.css';
-import Background from '../FeatureComponent/Background';
+import Sincurve from '../FeatureComponent/Sincurve';
 
 import { Link } from 'react-router-dom';
 
 export default function Home() {
     return (
         // Home Section
-        <section id="home" className="section">
+        <section id="home" className="section items-end">
             <div className='ml-10 mb-15 flex flex-col gap-1 items-center z-5'>
                 <img src="/diffart.svg" alt="diffart" />
                 <p className='font-serif font-bold text-xl text-white mt-3 mb-9 self-start'>design poster more customized</p>
@@ -28,7 +28,7 @@ export default function Home() {
                     </button>
                 </Link>
             </div>
-            <Background />
+            <Sincurve />
         </section>
     );
 }

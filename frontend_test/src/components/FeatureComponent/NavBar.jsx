@@ -1,10 +1,14 @@
 import './NavBar.css';
 import { useState, useEffect, useRef } from 'react';
+import AuthModal from '../common/AuthModal';
+
 
 export default function NavBar() {
     
     const [activeSection, setActiveSection] = useState('home');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authMode, setAuthMode] = useState('login');
     const navLinksRef = useRef(null);
     const menuToggleRef = useRef(null);
 
@@ -105,6 +109,12 @@ export default function NavBar() {
         }
     };
 
+    const openAuthModal = (mode) => {
+        setAuthMode(mode);
+        setIsAuthModalOpen(true);
+        setIsMobileMenuOpen(false);
+    };
+
     // Set up event listeners
     useEffect(() => {
         console.log('🔧 Setting up scroll listener, activeSection:', activeSection);
@@ -123,81 +133,91 @@ export default function NavBar() {
     }, [activeSection]); // Add activeSection as dependency
 
     return (
-        // Floating Navbar
-        <nav className="navbar">
-            <div className="nav-container">
-                <a href="#home" className="logo">
-                    <img src="/logo.svg" alt="logo" />
-                </a>
-                <div className="nav-center">
-                    <ul 
-                        className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`} 
-                        ref={navLinksRef}
+        // Floating NavBar
+        <>
+            <nav className="navbar">
+                <div className="nav-container">
+                    <a href="#home" className="logo">
+                        <img src="/logo.svg" alt="logo" />
+                    </a>
+                    <div className="nav-center">
+                        <ul 
+                            className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`} 
+                            ref={navLinksRef}
+                        >
+                            <li>
+                                <a 
+                                    href="#home" 
+                                    className={activeSection === 'home' ? 'active' : ''}
+                                    onClick={handleNavLinkClick}
+                                >
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    href="#about" 
+                                    className={activeSection === 'about' ? 'active' : ''}
+                                    onClick={handleNavLinkClick}
+                                >
+                                    About
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    href="#services" 
+                                    className={activeSection === 'services' ? 'active' : ''}
+                                    onClick={handleNavLinkClick}
+                                >
+                                    Services
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    href="#portfolio" 
+                                    className={activeSection === 'portfolio' ? 'active' : ''}
+                                    onClick={handleNavLinkClick}
+                                >
+                                    Portfolio
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    href="#contact" 
+                                    className={activeSection === 'contact' ? 'active' : ''}
+                                    onClick={handleNavLinkClick}
+                                >
+                                    Contact
+                                </a>
+                            </li>
+                            <li className="mobile-auth-buttons">
+                                <button onClick={() => openAuthModal('register')} className="auth-btn signup-btn">
+                                    Sign Up
+                                </button>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                    <div className="auth-buttons">
+                        <button onClick={() => openAuthModal('register')} className="auth-btn signup-btn">
+                            Sign Up
+                        </button>
+                    </div>
+                    <button 
+                        className="menu-toggle" 
+                        ref={menuToggleRef}
+                        onClick={toggleMobileMenu}
                     >
-                        <li>
-                            <a 
-                                href="#home" 
-                                className={activeSection === 'home' ? 'active' : ''}
-                                onClick={handleNavLinkClick}
-                            >
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                href="#about" 
-                                className={activeSection === 'about' ? 'active' : ''}
-                                onClick={handleNavLinkClick}
-                            >
-                                About
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                href="#services" 
-                                className={activeSection === 'services' ? 'active' : ''}
-                                onClick={handleNavLinkClick}
-                            >
-                                Services
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                href="#portfolio" 
-                                className={activeSection === 'portfolio' ? 'active' : ''}
-                                onClick={handleNavLinkClick}
-                            >
-                                Portfolio
-                            </a>
-                        </li>
-                        <li>
-                            <a 
-                                href="#contact" 
-                                className={activeSection === 'contact' ? 'active' : ''}
-                                onClick={handleNavLinkClick}
-                            >
-                                Contact
-                            </a>
-                        </li>
-                        <li className="mobile-auth-buttons">
-                            <a href="#" className="auth-btn login-btn">Login</a>
-                            <a href="#" className="auth-btn signup-btn">Sign Up</a>
-                        </li>
-                    </ul>
-                    
+                        ☰
+                    </button>
                 </div>
-                <div className="auth-buttons">
-                    <a href="#" className="auth-btn login-btn">Login</a>
-                    <a href="#" className="auth-btn signup-btn">Sign Up</a>
-                </div>
-                <button 
-                    className="menu-toggle" 
-                    ref={menuToggleRef}
-                    onClick={toggleMobileMenu}
-                >
-                    ☰
-                </button>
-            </div>
-        </nav>
+            </nav>
+
+            <AuthModal 
+            isOpen={isAuthModalOpen} 
+            onClose={() => setIsAuthModalOpen(false)}
+            initialMode={authMode}
+            />
+        </>
     )
 }

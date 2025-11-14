@@ -17,7 +17,7 @@
 ### 前端仿照https://www.langchain.com/
 
 
-for llm, we use https://huggingface.co/openai-community/gpt2
+for llm, we use https://huggingface.co/Qwen/Qwen3-0.6B
 
 
 歌剧海报，包含摩登女郎，歌剧舞台等

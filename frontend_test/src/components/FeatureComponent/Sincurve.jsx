@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import './Background.css';
+import './Sincurve.css';
 
-export default function Background() {
+export default function Sincurve() {
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
     const timeRef = useRef(0);
