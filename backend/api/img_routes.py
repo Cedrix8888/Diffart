@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from models.request_models import RgbRequest, LayerRequest, SvgRequest
-from models.response_models import RgbResponse, LayerResponse, SvgResponse, ErrorResponse
+from models.img_models import RgbRequest, LayerRequest, SvgRequest, RgbResponse, LayerResponse, SvgResponse, ErrorResponse
 from services.img.img_service import layer_rgb, layer_trans, layer_svg
 from utils.security import get_api_key
 from dotenv import load_dotenv
@@ -75,8 +74,8 @@ async def request_layer(request: LayerRequest):
             request_id=result["request_id"],
             local_path=result["local_path"],
             timestamp=result["timestamp"],
-            prompt_pos=request.prompt_pos,
-            prompt_neg=request.prompt_neg
+            prompt_pos=result["prompt_pos"],
+            prompt_neg=result["prompt_neg"]
         )
     except ValueError as e:
         raise HTTPException(

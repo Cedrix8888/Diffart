@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './Chatbox.css';
 
+
 export default function Chatbox() {
     // 状态管理
     const [messages, setMessages] = useState([
@@ -12,14 +13,6 @@ export default function Chatbox() {
     const [userInput, setUserInput] = useState('');
     const chatEndRef = useRef(null);
 
-    // AI回复模板
-    const aiResponses = [
-        "I can help you create various designs - websites, graphics, presentations and more. Could you specify your needs?",
-        "Tell me more about your design project. What style, colors, or elements are you looking for?",
-        "Would you like to start with a sketch, or do you have specific requirements for your design?",
-        "I can generate design drafts based on your description. Please provide more details about your project.",
-        "Your design request is noted. Let me work on some options for you. Would you need any adjustments in particular?"
-    ];
 
     // 自动滚动到底部
     useEffect(() => {
@@ -27,20 +20,37 @@ export default function Chatbox() {
     }, [messages]);
 
     // 处理发送消息
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
+        let endpoint = '';
+        let submitData;
+
         e.preventDefault();
         const trimmedMessage = userInput.trim();
         
         if (trimmedMessage) {
         // 添加用户消息
-        setMessages([...messages, { sender: 'user', content: trimmedMessage }]);
-        setUserInput('');
+            setMessages([...messages, { sender: 'user', content: trimmedMessage }]);
+            submitData = {
+                prompt: trimmedMessage,
+            }
+            setUserInput('');
 
-        // 模拟AI回复延迟
-        setTimeout(() => {
-            const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
-            setMessages(prev => [...prev, { sender: 'ai', content: randomResponse }]);
-        }, 800);
+            // 添加AI回复
+            endpoint = '/api/llm/chat';
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'api-key': "u#Tqw(]%CTO+u&[FQ&G6apADEmKzOqc[Aqk-6W~Z"
+                },
+                body: JSON.stringify(submitData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setMessages(prev => [...prev, { sender: 'ai', content: result.content }]);
+                console.log('提交成功', result);
+            }
         }
     };
 
