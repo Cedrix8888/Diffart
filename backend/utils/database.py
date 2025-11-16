@@ -1,11 +1,15 @@
 from sqlalchemy.orm import Session
 import uuid
 from datetime import datetime
-from models import AIResult  # 导入模型类
+from models.db_models import AIResult  # 导入模型类
 
-def create_ai_result(db: Session, user_id: str, prompt: str, 
-                    db_path: str, image_format: str, model_name: str,
-                    processing_time: str = None, is_successful: bool = True):
+def create_ai_result(db: Session, 
+                     user_id: str, 
+                     prompt: str, 
+                     db_path: str, 
+                     image_format: str, model_name: str,
+                     processing_time: str | None = None, 
+                     is_successful: bool = True):
     """
     创建AI生成结果记录并保存到数据库
     

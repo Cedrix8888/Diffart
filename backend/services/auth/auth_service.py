@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
-from typing import Optional, Union
+from datetime import datetime, timedelta, timezone
+from typing import cast
 import jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
@@ -25,13 +25,13 @@ class AuthService:
         return pwd_context.hash(password)
     
     @staticmethod
-    def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
         """Create JWT access token"""
         to_encode = data.copy()
         if expires_delta:
-            expire = datetime.utcnow() + expires_delta
+            expire = datetime.now(timezone.utc) + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -58,30 +58,30 @@ class AuthService:
             )
     
     @staticmethod
-    def get_user_by_username(db: Session, username: str) -> Optional[User]:
+    def get_user_by_username(db: Session, username: str) -> User | None:
         """Get user by username"""
         return db.query(User).filter(User.username == username).first()
     
     @staticmethod
-    def get_user_by_email(db: Session, email: str) -> Optional[User]:
+    def get_user_by_email(db: Session, email: str) -> User | None:
         """Get user by email"""
         return db.query(User).filter(User.email == email).first()
     
     @staticmethod
-    def get_user_by_id(db: Session, user_id: str) -> Optional[User]:
+    def get_user_by_id(db: Session, user_id: str) -> User | None:
         """Get user by ID"""
-        return db.query(User).filter(User.id == user_id).first()
+        return db.query(User).filter(User.user_id == user_id).first()
     
     @staticmethod
-    def authenticate_user(db: Session, username: str, password: str) -> Union[User, bool]:
+    def authenticate_user(db: Session, username: str, password: str) -> User | None:
         """Authenticate user with username and password"""
         user = AuthService.get_user_by_username(db, username)
         if not user:
-            return False
-        if not user.is_active:
-            return False
-        if not AuthService.verify_password(password, user.password):
-            return False
+            return None
+        if user.is_active is not True:
+            return None
+        if not AuthService.verify_password(password, cast(str, user.password)):
+            return None
         return user
     
     @staticmethod
@@ -119,27 +119,29 @@ class AuthService:
     def login_user(db: Session, username: str, password: str) -> TokenResponse:
         """Login user and return token with user info"""
         user = AuthService.authenticate_user(db, username, password)
-        if not user:
+        if user is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         
+        # At this point, user is guaranteed to be a User object
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = AuthService.create_access_token(
-            data={"sub": user.id}, expires_delta=access_token_expires
+            data={"sub": cast(str, user.user_id)}, expires_delta=access_token_expires
         )
         
         user_response = UserResponse(
-            id=user.id,
-            username=user.username,
-            email=user.email,
-            is_active=user.is_active,
-            created_at=user.created_at
+            user_id=cast(str, user.user_id),
+            username=cast(str, user.username),
+            email=cast(str, user.email),
+            is_active=cast(bool, user.is_active),
+            created_at=cast(datetime, user.created_at)
         )
         
         return TokenResponse(
             access_token=access_token,
+            token_type="bearer",
             user=user_response
         )

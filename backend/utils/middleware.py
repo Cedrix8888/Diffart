@@ -1,15 +1,13 @@
-from fastapi import Request, HTTPException, status
+from fastapi import Request
 from fastapi.security.utils import get_authorization_scheme_param
 from starlette.middleware.base import BaseHTTPMiddleware
-from typing import Optional, List
-import os
 
 class JWTAuthMiddleware(BaseHTTPMiddleware):
     """
     Middleware to handle JWT authentication for protected routes
     """
     
-    def __init__(self, app, exclude_paths: Optional[List[str]] = None):
+    def __init__(self, app, exclude_paths: list[str] | None = None):
         super().__init__(app)
         self.exclude_paths = exclude_paths or [
             "/docs", "/redoc", "/openapi.json", 
@@ -24,7 +22,7 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
             return response
         
         # Get authorization header
-        authorization: Optional[str] = request.headers.get("Authorization")
+        authorization: str | None = request.headers.get("Authorization")
         
         if not authorization:
             # Allow request to continue, let individual endpoints handle auth

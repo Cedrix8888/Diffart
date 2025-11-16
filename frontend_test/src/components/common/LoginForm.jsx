@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthManager from '/src/utils/AuthManager.js';
 
 export default function LoginForm({ onSuccess }) {
     const [formData, setFormData] = useState({
@@ -25,32 +26,21 @@ export default function LoginForm({ onSuccess }) {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    password: formData.password
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                if (formData.remember) {
-                    localStorage.setItem('username', formData.username);
-                }
-                onSuccess?.();
-                navigate('/workspace');
-            } else {
-                setError(data.message || 'Login failed. Please try again.');
+            const data = await AuthManager.login(formData.username, formData.password);
+            
+            if (formData.remember) {
+                localStorage.setItem('username', formData.username);
             }
-        } catch (err) {
-            setError('Network error. Please check your connection.');
-            console.error('Login error:', err);
+            onSuccess?.();
+            navigate('/workspace');
+        } catch (error) {
+            // 可以根据错误类型或消息进一步区分处理
+            if (error.message.includes('Network') || error.name === 'NetworkError') {
+                setError('Network error. Please check your connection.');
+            } else {
+                setError(error.message || 'Login failed. Please try again.');
+            }
+            console.error('Login error:', error);
         } finally {
             setLoading(false);
         }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthManager from '../../utils/AuthManager.js';
 
 export default function RegisterForm({ onSuccess }) {
     const [formData, setFormData] = useState({
@@ -53,29 +54,17 @@ export default function RegisterForm({ onSuccess }) {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                onSuccess?.();
-                navigate('/workspace');
-            } else {
-                setError(data.message || 'Registration failed. Please try again.');
-            }
+            const data = await AuthManager.register(
+                formData.username,
+                formData.email,
+                formData.password
+            );
+            
+            // Registration successful, you might want to auto-login or show success message
+            onSuccess?.();
+            navigate('/'); // Navigate to login page or auto-login
         } catch (err) {
-            setError('Network error. Please check your connection.');
+            setError(err.message || 'Registration failed. Please try again.');
             console.error('Registration error:', err);
         } finally {
             setLoading(false);

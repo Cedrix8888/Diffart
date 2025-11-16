@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from services.auth.auth_service import AuthService
 from models.auth_models import UserLogin, UserRegister, TokenResponse, UserResponse
 from models.db_models import User
-from utils.dependencies import get_db, get_current_active_user
+from utils.dependencies import get_db, get_active_user
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -51,7 +51,7 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(
-    current_user: User = Depends(get_current_active_user)
+    current_user: User = Depends(get_active_user)
 ):
     """
     Get current authenticated user information
@@ -65,7 +65,7 @@ async def get_current_user_info(
     )
 
 @router.post("/verify-token")
-async def verify_token(current_user: User = Depends(get_current_active_user)):
+async def verify_token(current_user: User = Depends(get_active_user)):
     """
     Verify if the provided token is valid
     """
@@ -86,7 +86,7 @@ async def logout():
 async def change_password(
     current_password: str,
     new_password: str,
-    current_user: User = Depends(get_current_active_user),
+    current_user: User = Depends(get_active_user),
     db: Session = Depends(get_db)
 ):
     """

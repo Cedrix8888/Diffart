@@ -67,4 +67,3 @@ def llm_qwen(
         "thinking_content": thinking_content,
         "content": content
     }
-
