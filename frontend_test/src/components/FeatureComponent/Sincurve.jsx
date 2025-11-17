@@ -39,7 +39,7 @@ export default function Sincurve() {
             ctx.lineWidth = lineWidth;
 
             // Horizontal lines
-            for (let i = 0; i < 64; i++) {
+            for (let i = 0; i < 31; i++) {
                 let y = gridSize - lineWidth / 2 + i * gridSize;
                 let normalizedY = y / canvas.height;
                 let x = caculateX(normalizedY, time) * canvas.width;

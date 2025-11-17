@@ -1,6 +1,12 @@
 #home {
-  background-color: black;
-  z-index: 0;
+  background: 
+    linear-gradient(
+      to bottom,
+      black 0%,
+      #2c2c2c 100%
+    ),
+  black;
+
 }
 
 #home img {

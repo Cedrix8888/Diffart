@@ -3,7 +3,7 @@ import torch
 import os
 
 def llm_gemma(
-    prompt: str = "Write a poem on Hugging Face, the company",
+    prompt: str = "introduce llm to me in detail.",
     system_message: str = "You are a helpful assistant."
 ) -> dict[str, str]:
     # 项目内模型存储路径（与代码文件同级的 models 文件夹）
@@ -77,4 +77,4 @@ def llm_gemma(
 
 if __name__ == "__main__":
     result = llm_gemma()
-    print(result)
+    print(result["content"])

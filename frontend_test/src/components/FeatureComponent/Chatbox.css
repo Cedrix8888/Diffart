@@ -1,14 +1,15 @@
 /* 滚动条美化 */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 3px;
+    background-color: #2c2c2c;
+    border-radius: 10px;
 }
 ::-webkit-scrollbar-track {
-    background-color: #f3f4f6;
+    background-color: #1a1a1a;
+    border-radius: 10px;
 }
 
 /* 消息动画 */
@@ -51,4 +52,23 @@
 #chatbox-input::placeholder {
     color: #9ca3af;
     opacity: 0.5;
+}
+
+/* 定义动画：先缩小到80%，然后还原 */
+@keyframes scaleTemporarily {
+  0% {
+    transform: scale(100%); /* 初始状态 */
+  }
+  50% {
+    transform: scale(80%); /* 中间状态（缩小） */
+  }
+  100% {
+    transform: scale(100%); /* 结束状态（还原） */
+  }
+}
+
+/* 应用动画到元素 */
+#chat-send.sending {
+  animation: scaleTemporarily 0.3s ease-in-out; /* 1s 是动画总时长，可调整 */
+  /* 如果需要元素在动画结束后保持最终状态（这里是还原），可以省略下面这行（默认就是还原） */
 }

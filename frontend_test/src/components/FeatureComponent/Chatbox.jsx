@@ -11,6 +11,7 @@ export default function Chatbox() {
         }
     ]);
     const [userInput, setUserInput] = useState('');
+    const [isSending, setIsSending] = useState(false);
     const chatEndRef = useRef(null);
 
 
@@ -27,29 +28,35 @@ export default function Chatbox() {
         e.preventDefault();
         const trimmedMessage = userInput.trim();
         
-        if (trimmedMessage) {
-        // 添加用户消息
+        if (trimmedMessage && !isSending) {
+            setIsSending(true);
+            
+            // 添加用户消息
             setMessages([...messages, { sender: 'user', content: trimmedMessage }]);
             submitData = {
                 prompt: trimmedMessage,
             }
             setUserInput('');
 
-            // 添加AI回复
-            endpoint = '/api/llm/chat';
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'api-key': "u#Tqw(]%CTO+u&[FQ&G6apADEmKzOqc[Aqk-6W~Z"
-                },
-                body: JSON.stringify(submitData)
-            });
+            try {
+                // 添加AI回复
+                endpoint = '/api/llm/chat';
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': "u#Tqw(]%CTO+u&[FQ&G6apADEmKzOqc[Aqk-6W~Z"
+                    },
+                    body: JSON.stringify(submitData)
+                });
 
-            if (response.ok) {
-                const result = await response.json();
-                setMessages(prev => [...prev, { sender: 'ai', content: result.content }]);
-                console.log('提交成功', result);
+                if (response.ok) {
+                    const result = await response.json();
+                    setMessages(prev => [...prev, { sender: 'ai', content: result.content }]);
+                    console.log('提交成功', result);
+                }
+            } finally {
+                setIsSending(false);
             }
         }
     };
@@ -62,16 +69,7 @@ export default function Chatbox() {
         }
     };
 
-    // 防止XSS攻击
-    const escapeHtml = (unsafe) => {
-        if (!unsafe) return '';
-        return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    };
+
 
     return (
         <div className="card w-[30%] h-[90%] ml-10 flex flex-col justify-between items-center z-5">
@@ -81,14 +79,14 @@ export default function Chatbox() {
                     <div key={index} className="message-appear">
                         {message.sender === 'user' ? (
                             <div className="flex justify-end">
-                                <div className="px-4 py-3 bg-[#2c2c2c] text-white rounded-lg max-w-[60%] font-inter font-medium text-[14px] leading-[160%] cursor-text select-text whitespace-pre-wrap break-words">
-                                    <p>{escapeHtml(message.content)}</p>
+                                <div className="px-4 py-3 mr-3 bg-[#2c2c2c] text-white rounded-lg max-w-[60%] font-inter font-medium text-[14px] leading-[160%] cursor-text select-text whitespace-pre-wrap break-words">
+                                    <p>{message.content}</p>
                                 </div>
                             </div>
                         ) : (
                             <div className="flex flex-col gap-3">
                                 <div className="px-4 py-3 text-white rounded-lg max-w-[60%] font-serif font-light text-[14px] leading-[160%] cursor-text select-text whitespace-pre-wrap break-words">
-                                    <p>{escapeHtml(message.content)}</p>
+                                    <p>{message.content}</p>
                                 </div>
                             </div>
                         )}
@@ -109,8 +107,13 @@ export default function Chatbox() {
                     spellCheck="true"
                 />
                 <div className="z-1 flex w-full items-center justify-end text-xs">
-                    <button className="h-8 min-w-8 rounded-full bg-[#2c2c2c] flex items-center justify-center enabled:hover:bg-[#4A535F] enabled:active:bg-[#191E26] enabled:cursor-pointer disabled:cursor-not-allowed disabled:opacity-30" onClick={handleSendMessage}>
-                        <img src="/arrow_upward.svg" alt="send" width='24' height='24'/>
+                    <button
+                        id='chat-send'
+                        className={`h-8 min-w-8 rounded-full bg-[#4e4e4e] flex items-center justify-center relative overflow-hidden transition-all duration-200 ease-in-out enabled:hover:bg-[#3c3c3c] enabled:cursor-pointer disabled:cursor-not-allowed ${isSending ? 'sending' : ''}`}
+                        onClick={handleSendMessage}
+                        disabled={isSending || !userInput.trim()}
+                    >
+                        <img src="/arrow_upward.svg" alt="send" width='24' height='24' className='transition-all duration-300 ease-in-out'/>
                     </button>
                 </div>
             </div>
