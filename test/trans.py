@@ -121,5 +121,7 @@ def gen_trans(width: int = 1024,
 if __name__ == "__main__":
     # 确保 static 目录存在
     os.makedirs("./static", exist_ok=True)
+    print("input your prompt:")
+    prompt = input()
     # 保存文件
-    gen_trans()[0].save("./static/test.png")
+    gen_trans(prompt_pos=prompt)[0].save("./static/test.png")
